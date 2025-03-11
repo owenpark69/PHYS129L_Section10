@@ -1,0 +1,18 @@
+
+ &INPUTPP
+    prefix    =  'graphene',
+    ! outdir    =  '/tmp',
+    filplot   =  'psi2.graphene',
+    plot_num  =  7,
+    kpoint    =  1, !gamma point 
+    kband(1)  =  1,
+    kband(2)  =  2,    
+    lsign     =  .false.,
+ /
+ &PLOT
+    fileout       =  '.xsf',
+    iflag         =  3,
+    nfile         =  1,
+    output_format =  5,
+    weight(1)     =  1.0,
+ /
