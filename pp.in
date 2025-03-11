@@ -5,8 +5,8 @@
     filplot   =  'psi2.graphene',
     plot_num  =  7,
     kpoint    =  1, !gamma point 
-    kband(1)  =  1,
-    kband(2)  =  2,    
+    kband(1) = 5
+    kband(2) = 6
     lsign     =  .false.,
  /
  &PLOT

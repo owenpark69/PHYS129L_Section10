@@ -1,0 +1,31 @@
+ &CONTROL
+    calculation = 'scf',
+    prefix      = 'graphene',
+    ! otudir      = '/tmp',
+    pseudo_dir  = '/root/Desktop/pseudo',        
+ /
+
+ &SYSTEM
+    ibrav     = 4,
+    celldm(1) = 4.654, !a-axes (x), !b-axes (y), in Hexagon lattice, a=b. 
+    celldm(3) = 3.0, !c-axes (z)
+    nat  = 2,
+    ntyp = 1,
+    ecutwfc = 20.0,
+    ecutrho = 200.0, 
+
+ /
+ 
+ &ELECTRONS
+    conv_thr = 1.0d-8
+ /
+ 
+ATOMIC_SPECIES
+   C  12.0107 C.pbe-n-kjpaw_psl.1.0.0.UPF
+   
+ATOMIC_POSITIONS alat ! in the lattice axis coord. 
+   C    0.000000    0.0000000   0.000000
+   C    0.000000    0.5773503   0.000000
+   
+K_POINTS automatic
+   9 9 1   0 0 0
