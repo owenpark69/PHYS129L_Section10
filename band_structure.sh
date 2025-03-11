@@ -15,21 +15,22 @@ pw.x < "$BAND_INPUT" > "$BAND_OUTPUT"
 ENERGY_FILE="bands.dat"
 rm -f "$ENERGY_FILE"
 
-# Extract band structure data from the band calculation output using awk
-awk '
-  /^\s*k\s*=\s*/ {
-    # Extract the three k-point coordinates from the current line
-    match($0, /k\s*=\s*([0-9\.\-]+)\s+([0-9\.\-]+)\s+([0-9\.\-]+)/, arr);
-    k1 = arr[1]; k2 = arr[2]; k3 = arr[3];
-    
-    # Read the next line and skip any empty lines until band energies are found
-    getline;
-    while ($0 ~ /^[[:space:]]*$/) { getline; }
-    
-    # Print the extracted k-point coordinates followed by the band energies
-    print k1, k2, k3, $0;
-  }
-' "$BAND_OUTPUT" > "$ENERGY_FILE"
+# Extract band structure data using a bash while-read loop
+while IFS= read -r line; do
+    # Check if the line contains a k-point line
+    if [[ $line =~ ^[[:space:]]*k[[:space:]]*= ]]; then
+        if [[ $line =~ k[[:space:]]*=[[:space:]]*([0-9.-]+)[[:space:]]+([0-9.-]+)[[:space:]]+([0-9.-]+) ]]; then
+            k1="${BASH_REMATCH[1]}"
+            k2="${BASH_REMATCH[2]}"
+            k3="${BASH_REMATCH[3]}"
+        else
+            continue
+        fi
+        # Read the next non-empty line for band energies
+        while IFS= read -r next_line && [[ -z "$next_line" ]]; do :; done
+        echo "$k1 $k2 $k3 $next_line" >> "$ENERGY_FILE"
+    fi
+done < "$BAND_OUTPUT"
 
 if [ ! -s "$ENERGY_FILE" ]; then
     echo "Error: No band data extracted into ${ENERGY_FILE}. Check the format of ${BAND_OUTPUT}."
